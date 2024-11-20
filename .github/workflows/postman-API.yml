@@ -1,0 +1,26 @@
+name: Trigger Postman Folder Run
+
+on: workflow_dispatch
+
+jobs:
+  trigger-postman-folder:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Trigger the Postman Collection Run
+    - name: Run Postman Folder via API
+      env:
+        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      run: |
+        curl --location --request POST 'https://api.getpostman.com/collection/runs' \
+        --header 'X-Api-Key: $POSTMAN_API_KEY' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "collection": "39081739-fe1b2dc4-a6d6-41de-8819-ccffeb77f741",
+          "environment": "39081739-53573322-d66f-4497-88b9-2fe924921531",
+          "folder": "Manager Gateway",
+          "options": {
+            "requestTimeout": 10000,
+            "iterationCount": 1
+          }
+        }'
